@@ -1,0 +1,68 @@
+body {
+    /* background-color: bisque; */
+}
+
+.search {
+    text-align: center;
+  padding: 100px;
+}
+
+.recipe-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.recipe {
+    padding: 20px;
+    flex-grow: 4;
+}
+
+.recipe-title {
+  list-style: none;
+  display: inline;
+}
+
+.recipe-image {
+  height: 100%;
+}
+
+.card {
+    border-radius: 15px;
+}
+
+.ingredient-list {
+    display: flex;
+}
+
+.ingredient-wrapper {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.used-ingredients {
+    color: green;
+}
+
+.missing-ingredients {
+    color: red;
+}
+
+.unused-ingredients {
+    color: rgb(154, 154, 62);
+}
+
+.summary {
+    display: inline-block;
+    width: 80%;
+    float: right;
+    margin-right: -30%;
+  }
+  
+  .card-body {
+    width: 70%;
+    float: left;
+  }
+  
