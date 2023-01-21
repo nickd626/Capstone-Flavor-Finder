@@ -1,40 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom"
+import axios from "axios";
 
-const LogIn = ({ onLogInUsername, onLogInAllergies }) => {
+const LogIn = (props) => {
+  const [loginForm, setLoginForm] = useState({
+    username: "",
+    password: "",
+  });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    let data;
-
-    data = {
-      username: event.target[0].value,
-      password: event.target[1].value,
-    };
-
-    fetch("/login", {
+  const logMeIn = (event) => {
+    axios({
       method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
+      url: "/token",
+      data: {
+        username: loginForm.username,
+        password: loginForm.password,
       },
     })
-      .then((res) => res.json())
-      .then((data) => {
-
-        if (data.success) {
-          localStorage.setItem('username', JSON.stringify(data.username));
-          localStorage.setItem('allergies', JSON.stringify(data.allergies))
-          console.log("Success");
-          const username = JSON.parse(localStorage.getItem('username'))
-          const allergies = JSON.parse(localStorage.getItem('allergies'))
-          console.log(username)
-          onLogInUsername(username)
-          console.log(allergies)
-          onLogInAllergies(allergies)
-        } else {
-          console.log("Unsuccessful");
+      .then((response) => {
+        props.setToken(response.data.access_token);
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response);
         }
-      });
+      });console.log(loginForm.username, loginForm.password)
+
+    setLoginForm({
+      username: "",
+      password: "",
+    });
+
+    event.preventDefault();
+  };
+
+  const handleChange = (event) => {
+    const { value, name } = event.target;
+    setLoginForm((prevNote) => ({
+      ...prevNote,
+      [name]: value,
+    }));
   };
 
   return (
@@ -53,36 +58,43 @@ const LogIn = ({ onLogInUsername, onLogInAllergies }) => {
                 <div className="card" style={{ borderRadius: "15px" }}>
                   <div className="card-body p-5 w-100">
                     <h2 className="text-uppercase text-center mb-5">Log In</h2>
-                    <form id="registration-form" onSubmit={handleSubmit}>
+                    <form className="login" id="registration-form">
                       <div className="form-outline mb-4">
                         <input
+                          onChange={handleChange}
                           type="text"
+                          text={loginForm.username}
                           id="form3Example1cg"
+                          name="username"
                           className="form-control form-control-lg"
                           placeholder="Username"
+                          value={loginForm.username}
                         />
                       </div>
                       <div className="form-outline mb-4">
                         <input
+                          onChange={handleChange}
                           type="password"
+                          text={loginForm.password}
                           id="form3Example4cg"
+                          name="password"
                           className="form-control form-control-lg"
                           placeholder="Password"
+                          value={loginForm.password}
                         />
                       </div>
                       <div className="d-flex justify-content-center">
                         <button
                           type="submit"
                           className="btn btn-dark btn-block btn-lg gradient-custom-4"
+                          onClick={logMeIn}
                         >
                           Log In
                         </button>
                       </div>
                       <p className="text-center text-muted mt-5 mb-0">
                         Don't have an account?{" "}
-                        <a href="#!" className="fw-bold text-body">
-                          <u>Sign Up</u>
-                        </a>
+                        <Link to={"/signup"}>Sign Up</Link>
                       </p>
                     </form>
                   </div>

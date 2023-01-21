@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import UseToken from "./components/UseToken";
 import Random from "./components/Random/Random";
 import FindByIngredients from "./components/FindByIngredients/FindByIngredients";
 import Navbar from "./components/Navbar/Navbar";
@@ -8,49 +10,46 @@ import LogIn from "./components/LogIn/LogIn";
 
 // TODO: FILL NAVBAR WITH PROPER LINKS
 // TODO: MATCH STYLES IN RANDOM.JSX => FINDBYINGREDIENTS.JSX
-// TODO: LOGIN FUNCTIONALITY (JWT?)
+// TODO: VIEWRECIPE.JSX => SINGLE RECIPE VIEW
 
 const App = () => {
-  const [currentUserUsername, setCurrentUserUsername] = useState(null);
-  const [currentUserAllergies, setCurrentUserAllergies] = useState(null);
+  const { token, removeToken, setToken } = UseToken();
 
   return (
     <BrowserRouter>
-      <div>
-        <Navbar
-          currentUserUsername={currentUserUsername}
-          currentUserAllergies={currentUserAllergies}
-        />
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              <LogIn
-                onLogInUsername={setCurrentUserUsername}
-                onLogInAllergies={setCurrentUserAllergies}
-              />
-            }
-          />
-          <Route path="/signup" element={<SignUp />} />
-          <Route
-            path="/findByIngredients"
-            element={
-              <FindByIngredients
-                currentUserUsername={currentUserUsername}
-                currentUserAllergies={currentUserAllergies}
-              />
-            }
-          />
-          <Route
-            path="/random"
-            element={
-              <Random
-                currentUserUsername={currentUserUsername}
-                currentUserAllergies={currentUserAllergies}
-              />
-            }
-          />
-        </Routes>
+      <div className="app">
+        {!token && token !== "" && token !== undefined ? (
+          <Routes>
+            <Route
+              exact
+              path="/login"
+              element={<LogIn setToken={setToken} />}
+            ></Route>
+            <Route
+              exact
+              path="/signup"
+              element={<SignUp setToken={setToken} />}
+            ></Route>
+          </Routes>
+        ) : (
+          <>
+        <Header token={removeToken} />
+            <Routes>
+              <Route
+                exact
+                path="/findByIngredients"
+                element={
+                  <FindByIngredients token={token} setToken={setToken} />
+                }
+              ></Route>
+              <Route
+                exact
+                path="/signup"
+                element={<SignUp token={token} setToken={setToken} />}
+              ></Route>
+            </Routes>
+          </>
+        )}
       </div>
     </BrowserRouter>
   );

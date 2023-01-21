@@ -1,10 +1,13 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
+from datetime import datetime, timedelta, timezone
 import requests
 import os
+import json
 
 
 # !!! GIT !!!
@@ -21,6 +24,9 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
 cors = CORS(app)
 app.config.from_object(Config)
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+jwt = JWTManager(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, compare_type=True)
 login_manager = LoginManager()
@@ -29,23 +35,24 @@ login_manager.init_app(app)
 if __name__ == '__main__':
     app.run(debug=True)
 
-@login_required
+
 @app.route('/findByIngredients/<ingredients>', methods=['GET', 'POST'])
 def findByIngredients(ingredients):
     # ! REMEMBER TO REMOVE &number=3
-    findByIngredients = f'https://api.spoonacular.com/recipes/findByIngredients?{key}&ingredients={ingredients}&ranking=2&number=3'
+    findByIngredients = f'https://api.spoonacular.com/recipes/findByIngredients?{key}&ingredients={ingredients}&ranking=2&number=10'
     getFindByIngredients = requests.get(findByIngredients)
     return getFindByIngredients.text
 
-@login_required
+
 @app.route('/findById/<int:id>', methods=['GET', 'POST'])
 def findById(id):
     findById = f'https://api.spoonacular.com/recipes/{id}/information?{key}'
     getFindById = requests.get(findById)
     return getFindById.text
 
-@login_required
+
 @app.route('/random')
+@jwt_required()
 def random():
     randomRecipe = f'https://api.spoonacular.com/recipes/random?{key}'
     getRandomRecipe = requests.get(randomRecipe)
@@ -80,25 +87,44 @@ def getAllUsers():
     return make_response({'Users': users}, 200)
 
 
-@app.post('/login')
-def login():
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()['exp']
+        now = datetime.now()
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data['access_token'] = access_token
+                response.data = json.dumps(data)
+        return response
+    except (RuntimeError, KeyError):
+        return response
+
+
+@app.post('/token')
+def create_token():
     data = request.get_json()
     print(data)
     user = User.query.filter_by(username=data['username']).first()
-    print('USER:', user.username)
-    if user.password == data['password']:
-        print('passed if statement')
-        login_user(user)
-        return make_response(({'username': current_user.username, 'allergies': current_user.allergies, 'success': True}), 200)
-    else:
-        return make_response(({'success': False}), 401)
+    try:
+        if user.password == data['password']:
+            print('passed if statement')
+            access_token = create_access_token(identity=data['username'])
+            return make_response(({'access_token': access_token, 'success': True}), 200)
+        else:
+            return make_response(({'message': 'Incorrect password', 'success': False}), 401)
+    except:
+        return make_response(({'message': 'User does not exist', 'success': False}), 401)
 
 
-@app.route('/logout')
-@login_required
+@app.post('/logout')
 def logout():
-    logout_user()
-    return make_response('Logged out successfully'), 200
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
 
 
 class User(UserMixin, db.Model):

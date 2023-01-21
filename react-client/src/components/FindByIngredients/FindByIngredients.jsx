@@ -1,57 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { Await } from "react-router-dom";
+import React, { useState } from "react";
+import axios from "axios";
 import "./FindByIngredients.css";
 
-const FindByIngredients = ({ currentUserUsername, currentUserAllergies }) => {
+const FindByIngredients = (props) => {
   const [data, setData] = useState([]);
-  const [summaries, setSummaries] = useState({});
-
-  // ! DEPENDENT ON USER !
-  // ? POTENTIALLY USE await() ?
-  // const renderAllergyBadges = () => {
-  //   if (currentUserAllergies != null) {
-  //     for (let i = 0; i > currentUserAllergies.split(",").length; i++) {
-  //       return (
-  //         <span className="badge rounded-pill text-bg-danger">
-  //           {currentUserAllergies[i]}
-  //         </span>
-  //       );
-  //     }
-  //   }
-  //   return null;
-  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event);
+    console.log(event)
     let ingredients = event.target[0].value.split(", ");
     ingredients = ingredients.join(",+");
-    fetch(`/findByIngredients/${ingredients}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        console.log(data);
-      });
+    axios({
+      method: "GET",
+      url: `/findByIngredients/${ingredients}`,
+      headers: {
+        Authorization: "Bearer " + props.token,
+      },
+    })
+    .then((response) => {
+      const res = response.data
+      res.access_token && props.setToken(res.access_token)
+      setData(res)
+    }).catch((error) => {
+      console.log(error.response)
+    })
+      console.log(data)
   };
 
-  const findById = (recipe) => {
-    fetch(`/findById/${recipe.id}`)
-      .then((res) => res.json())
-      .then((dataById) => {
-        setSummaries((prevSummaries) => ({
-          ...prevSummaries,
-          [recipe.id]: dataById.summary,
-        }));
-      });
-  };
-
-  useEffect(() => {
-    if (data.length > 0) {
-      data.forEach((recipe) => {
-        findById(recipe);
-      });
-    }
-  }, [data]);
 
   // ! ALLERGY BADGES
 
@@ -85,12 +60,12 @@ const FindByIngredients = ({ currentUserUsername, currentUserAllergies }) => {
                     <div className="col-md-8">
                       <div className="card-body">
                         <h5 className="card-title">{recipe.title}</h5>
-                        <div
+                        {/* <div
                           className="summary"
                           dangerouslySetInnerHTML={{
                             __html: summaries[recipe.id],
                           }}
-                        />
+                        /> */}
                         <div className="ingredient-list-wrapper">
                           <ul className="ingredient-list">
                             <div className="ingredient-wrapper">
@@ -131,7 +106,7 @@ const FindByIngredients = ({ currentUserUsername, currentUserAllergies }) => {
                             </div>
                           </ul>
                         </div>
-                        <div>{this.renderAllergyBadges}</div>
+                        {/* <div>{this.renderAllergyBadges}</div> */}
                       </div>
                     </div>
                   </div>
