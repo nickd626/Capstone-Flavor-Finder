@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./FindByIngredients.css";
 
 const FindByIngredients = (props) => {
   const [data, setData] = useState([]);
+  const [recipeLinks, setRecipeLinks] = useState({});
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(event)
+    console.log(event);
     let ingredients = event.target[0].value.split(", ");
     ingredients = ingredients.join(",+");
     axios({
@@ -17,31 +18,52 @@ const FindByIngredients = (props) => {
         Authorization: "Bearer " + props.token,
       },
     })
-    .then((response) => {
-      const res = response.data
-      res.access_token && props.setToken(res.access_token)
-      setData(res)
-    }).catch((error) => {
-      console.log(error.response)
-    })
-      console.log(data)
+      .then((response) => {
+        const res = response.data;
+        res.access_token && props.setToken(res.access_token);
+        setData(res);
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
   };
 
+  const findById = (recipe) => {
+    fetch(`/findById/${recipe.id}`)
+      .then((res) => res.json())
+      .then((dataById) => {
+        setRecipeLinks((prevRecipeLinks) => ({
+          ...prevRecipeLinks,
+          [recipe.id]: dataById.spoonacularSourceUrl,
+        }));
+      });
+  };
 
-  // ! ALLERGY BADGES
+  useEffect(() => {
+    if (data.length > 0) {
+      data.forEach((recipe) => {
+        findById(recipe);
+      });
+    }
+  }, [data]);
 
   return (
     <div>
       <form className="search" onSubmit={handleSubmit}>
-        <input
-          className="search-box"
-          name="ingredients"
-          type="search"
-          placeholder="Ingredients (apple, sugar, cinnamon, etc.)"
-        />
-        <button className="submit-btn" type="submit">
-          Search
-        </button>
+        <h2 className="title">Find recipes that make use of what you already have!</h2>
+        <div class="input-group">
+          <input
+            type="search"
+            class="form-control rounded"
+            placeholder="Ingredients (apples, sugar, cinnamon, etc.)"
+            aria-label="Search"
+            aria-describedby="search-addon"
+          />
+          <button type="submit" class="btn btn-success">
+            Find Recipes
+          </button>
+        </div>
       </form>
       <div className="recipe-block">
         {data &&
@@ -60,12 +82,6 @@ const FindByIngredients = (props) => {
                     <div className="col-md-8">
                       <div className="card-body">
                         <h5 className="card-title">{recipe.title}</h5>
-                        {/* <div
-                          className="summary"
-                          dangerouslySetInnerHTML={{
-                            __html: summaries[recipe.id],
-                          }}
-                        /> */}
                         <div className="ingredient-list-wrapper">
                           <ul className="ingredient-list">
                             <div className="ingredient-wrapper">
@@ -106,7 +122,13 @@ const FindByIngredients = (props) => {
                             </div>
                           </ul>
                         </div>
-                        {/* <div>{this.renderAllergyBadges}</div> */}
+                      </div>
+                      <div className="source-url">
+                        <a href={recipeLinks[recipe.id]}>
+                          <button className="btn btn-success">
+                            Learn More
+                          </button>
+                        </a>
                       </div>
                     </div>
                   </div>

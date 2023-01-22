@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import axios from "axios";
 
 const LogIn = (props) => {
+  const navigate = useNavigate()
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
@@ -19,6 +20,10 @@ const LogIn = (props) => {
     })
       .then((response) => {
         props.setToken(response.data.access_token);
+        console.log(response)
+        if(response.status === 200) {
+          navigate('/')
+        }
       })
       .catch((error) => {
         if (error.response) {
@@ -41,6 +46,7 @@ const LogIn = (props) => {
       [name]: value,
     }));
   };
+  
 
   return (
     <div>

@@ -38,8 +38,8 @@ if __name__ == '__main__':
 
 @app.route('/findByIngredients/<ingredients>', methods=['GET', 'POST'])
 def findByIngredients(ingredients):
-    # ! REMEMBER TO REMOVE &number=3
-    findByIngredients = f'https://api.spoonacular.com/recipes/findByIngredients?{key}&ingredients={ingredients}&ranking=2&number=10'
+    # ! REMEMBER TO REMOVE &number
+    findByIngredients = f'https://api.spoonacular.com/recipes/findByIngredients?{key}&ingredients={ingredients}&ranking=1&number=5'
     getFindByIngredients = requests.get(findByIngredients)
     return getFindByIngredients.text
 
@@ -134,7 +134,6 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String, nullable=False)
     username = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
-    allergies = db.Column(db.String)
 
     def save(self):
         db.session.add(self)
@@ -148,7 +147,6 @@ class User(UserMixin, db.Model):
         self.email = data['email']
         self.username = data['username']
         self.password = data['password']
-        self.allergies = data['allergies']
 
     def toDict(self):
         return {
@@ -156,5 +154,4 @@ class User(UserMixin, db.Model):
             'email': self.email,
             'username': self.username,
             'password': self.password,
-            'allergies': self.allergies
         }

@@ -1,6 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import UseToken from "./components/UseToken";
 import Random from "./components/Random/Random";
 import FindByIngredients from "./components/FindByIngredients/FindByIngredients";
@@ -10,7 +9,7 @@ import LogIn from "./components/LogIn/LogIn";
 
 // TODO: FILL NAVBAR WITH PROPER LINKS
 // TODO: MATCH STYLES IN RANDOM.JSX => FINDBYINGREDIENTS.JSX
-// TODO: VIEWRECIPE.JSX => SINGLE RECIPE VIEW
+      // ! ^^^ TEST STYLE MATCH ^^^ !
 
 const App = () => {
   const { token, removeToken, setToken } = UseToken();
@@ -33,19 +32,14 @@ const App = () => {
           </Routes>
         ) : (
           <>
-        <Header token={removeToken} />
+      <Navbar token={removeToken}/>
             <Routes>
               <Route
                 exact
-                path="/findByIngredients"
+                path="/"
                 element={
                   <FindByIngredients token={token} setToken={setToken} />
                 }
-              ></Route>
-              <Route
-                exact
-                path="/signup"
-                element={<SignUp token={token} setToken={setToken} />}
               ></Route>
             </Routes>
           </>

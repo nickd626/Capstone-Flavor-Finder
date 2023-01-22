@@ -1,33 +1,21 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./SignUp.css";
 
 const SignUp = () => {
-  const [isChecked, setIsChecked] = useState(false);
-
+  const navigate = useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
 
     console.log(event);
     let data;
 
-    if (!event.target[5].checked) {
-      data = {
-        username: event.target[0].value,
-        email: event.target[1].value,
-        password: event.target[2].value,
-        confirmPassword: event.target[3].value,
-        allergies: null,
-      };
-    } else {
-      data = {
-        username: event.target[0].value,
-        email: event.target[1].value,
-        password: event.target[2].value,
-        confirmPassword: event.target[3].value,
-        allergies: event.target[4].value,
-      };
-    }
+    data = {
+      username: event.target[0].value,
+      email: event.target[1].value,
+      password: event.target[2].value,
+      confirmPassword: event.target[3].value,
+    };
 
     if (data.password !== data.confirmPassword) {
       console.log("Passwords do not match!");
@@ -38,12 +26,13 @@ const SignUp = () => {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.log(error));
+      navigate('/login')
   };
 
   return (
@@ -97,31 +86,6 @@ const SignUp = () => {
                           placeholder="Confirm Password"
                         />
                       </div>
-                      {isChecked && (
-                        <div className="form-outline mb-4">
-                          <input
-                            type="text"
-                            id="form3Example4cdg"
-                            className="form-control form-control-lg"
-                            placeholder="Allergies (peanuts, soy, etc.)"
-                          />
-                        </div>
-                      )}
-                      <div className="form-check d-flex justify-content-center mb-5">
-                        <input
-                          className="form-check-input me-2"
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => setIsChecked(!isChecked)}
-                          id="form2Example3cg"
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="form2Example3g"
-                        >
-                          I have food allergies
-                        </label>
-                      </div>
                       <div className="d-flex justify-content-center">
                         <button
                           type="submit"
@@ -132,7 +96,7 @@ const SignUp = () => {
                       </div>
                       <p className="text-center text-muted mt-5 mb-0">
                         Already have an account?{" "}
-                         <Link to={'/login'}>Log In</Link>
+                        <Link to={"/login"}>Log In</Link>
                       </p>
                     </form>
                   </div>
