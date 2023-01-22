@@ -1,77 +1,72 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import axios from "axios"
+import "./Random.css"
 
-const Random = () => {
+const Random = (props) => {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    fetch("/random")
-      .then((resp) => {
-        return resp.json();
+  const handleSubmit = () => {
+    axios({
+      method: "GET",
+      url: '/random',
+      headers: {
+        Authorization: "Bearer " + props.token,
+      },
+    })
+      .then((response) => {
+        const res = response.data;
+        res.access_token && props.setToken(res.access_token);
+        setData(res);
+        console.log(res);
       })
-
-      .then((data) => {
-        setData(data);
-        console.log(data);
+      .catch((error) => {
+        console.log(error.response);
       });
-  }, []);
+    }
 
+
+    
   // ROUTE AND JSX FUNCTIONAL, FILL WITH VALUES
 
   return (
     <div>
-      <div>
-        <button className="random-btn" onClick={useEffect} type="submit">
+      <div className="random-btn">
+      <h2>Feeling Lucky?</h2>
+        <button className="submit-btn btn btn-success" onClick={handleSubmit} type="submit">
           Random Recipe
         </button>
       </div>
       <div className="recipe-block">
-        {data && (
+        {data.recipes && (
           <div className="recipe" key={data.id}>
             <div className="card mb-3">
               <div className="row g-0">
                 <div className="col-md-4">
                   <img
-                    src={data.image}
+                    src={data.recipes[0].image}
                     className="recipe-image img-fluid rounded-start"
                     alt="Recipe"
                   />
                 </div>
                 <div className="col-md-8">
                   <div className="card-body">
-                    <h5 className="card-title">{data.title}</h5>
+                    <h5 className="card-title">{data.recipes[0].title}</h5>
+                    <hr/>
+                    <div
+                          className="summary"
+                          dangerouslySetInnerHTML={{
+                            __html: data.recipes[0].summary,
+                          }}
+                        />
                     <div className="ingredient-list-wrapper">
                       <ul className="ingredient-list">
                         <div className="ingredient-wrapper">
-                          <p>Uses:</p>
-                          {data.usedIngredients &&
-                            data.usedIngredients.map((ingredients) => (
+                          <strong>Ingredients:</strong>
+                          {data.recipes[0].extendedIngredients &&
+                            data.recipes[0].extendedIngredients.map((ingredients) => (
                               <li
                                 key={ingredients.name}
                                 className="used-ingredients"
-                              >
-                                {ingredients.name}
-                              </li>
-                            ))}
-                        </div>
-                        <div className="ingredient-wrapper">
-                          <p>Missing:</p>
-                          {data.missedIngredients &&
-                            data.missedIngredients.map((ingredients) => (
-                              <li
-                                key={ingredients.name}
-                                className="missing-ingredients"
-                              >
-                                {ingredients.name}
-                              </li>
-                            ))}
-                        </div>
-                        <div className="ingredient-wrapper">
-                          <p>Unused:</p>
-                          {data.unusedIngredients &&
-                            data.unusedIngredients.map((ingredients) => (
-                              <li
-                                key={ingredients.name}
-                                className="unused-ingredients"
                               >
                                 {ingredients.name}
                               </li>
@@ -81,7 +76,7 @@ const Random = () => {
                     </div>
                   </div>
                   <div className="source-url">
-                    <a href={data.spoonacularSourceUrl}>
+                    <a href={data.recipes[0].spoonacularSourceUrl}>
                       <button className="btn btn-success">Learn More</button>
                     </a>
                   </div>

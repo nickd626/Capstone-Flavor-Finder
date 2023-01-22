@@ -1,10 +1,10 @@
 body {
-    background-color: bisque;
+  background-color: bisque;
 }
 
 .search {
   margin: 0 auto;
-  width: 50%;
+  width: 63%;
   padding: 100px;
 }
 
@@ -15,8 +15,8 @@ body {
 }
 
 .recipe {
-    padding: 20px;
-    flex-grow: 4;
+  padding: 20px;
+  flex-grow: 4;
 }
 
 .recipe-title {
@@ -29,40 +29,39 @@ body {
 }
 
 .card {
-    border-radius: 15px;
+  border-radius: 15px;
 }
 
 .ingredient-list {
-    display: flex;
+  display: flex;
 }
 
 .ingredient-wrapper {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    width: 30%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 30%;
 }
 
 .used-ingredients {
-    color: green;
+  color: green;
 }
 
 .missing-ingredients {
-    color: red;
+  color: red;
 }
 
 .unused-ingredients {
-    color: rgb(154, 154, 62);
+  color: rgb(154, 154, 62);
 }
 
 .source-url {
-    display: block;
-    margin-top: 10%;
-  }
-  
-  .card-body {
-    width: 70%;
-    float: left;
-  }
-  
+  display: block;
+  margin: 20% auto;
+}
+
+.card-body {
+  width: 70%;
+  float: left;
+}

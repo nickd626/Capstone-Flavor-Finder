@@ -1,0 +1,16 @@
+.random-btn {
+  text-align: center;
+  display: block;
+  margin: 55px auto;
+  padding: 100px;
+}
+
+.submit-btn {
+  font-size: x-large;
+  width: 200px;
+  height: 75px;
+}
+
+.ingredient-wrapper {
+    width: 100%;
+}

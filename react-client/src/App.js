@@ -9,7 +9,7 @@ import LogIn from "./components/LogIn/LogIn";
 
 // TODO: FILL NAVBAR WITH PROPER LINKS
 // TODO: MATCH STYLES IN RANDOM.JSX => FINDBYINGREDIENTS.JSX
-      // ! ^^^ TEST STYLE MATCH ^^^ !
+// ! ^^^ TEST STYLE MATCH ^^^ !
 
 const App = () => {
   const { token, removeToken, setToken } = UseToken();
@@ -32,7 +32,7 @@ const App = () => {
           </Routes>
         ) : (
           <>
-      <Navbar token={removeToken}/>
+            <Navbar token={removeToken} />
             <Routes>
               <Route
                 exact
@@ -40,6 +40,11 @@ const App = () => {
                 element={
                   <FindByIngredients token={token} setToken={setToken} />
                 }
+              ></Route>
+              <Route
+                exact
+                path="/random"
+                element={<Random token={token} setToken={setToken} />}
               ></Route>
             </Routes>
           </>

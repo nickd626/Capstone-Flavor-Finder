@@ -4,6 +4,7 @@ import "./FindByIngredients.css";
 
 const FindByIngredients = (props) => {
   const [data, setData] = useState([]);
+  const [summaries, setSummaries] = useState({});
   const [recipeLinks, setRecipeLinks] = useState({});
 
   const handleSubmit = (event) => {
@@ -33,6 +34,10 @@ const FindByIngredients = (props) => {
     fetch(`/findById/${recipe.id}`)
       .then((res) => res.json())
       .then((dataById) => {
+        setSummaries((prevSummaries) => ({
+          ...prevSummaries,
+          [recipe.id]: dataById.summary,
+        }));
         setRecipeLinks((prevRecipeLinks) => ({
           ...prevRecipeLinks,
           [recipe.id]: dataById.spoonacularSourceUrl,
@@ -60,7 +65,7 @@ const FindByIngredients = (props) => {
             aria-label="Search"
             aria-describedby="search-addon"
           />
-          <button type="submit" class="btn btn-success">
+          <button type="submit" className="btn btn-success">
             Find Recipes
           </button>
         </div>
@@ -82,6 +87,13 @@ const FindByIngredients = (props) => {
                     <div className="col-md-8">
                       <div className="card-body">
                         <h5 className="card-title">{recipe.title}</h5>
+                        <hr/>
+                        <div
+                          className="summary"
+                          dangerouslySetInnerHTML={{
+                            __html: summaries[recipe.id],
+                          }}
+                        />
                         <div className="ingredient-list-wrapper">
                           <ul className="ingredient-list">
                             <div className="ingredient-wrapper">
