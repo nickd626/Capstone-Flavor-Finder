@@ -38,10 +38,16 @@ if __name__ == '__main__':
 
 @app.route('/findByIngredients/<ingredients>', methods=['GET', 'POST'])
 def findByIngredients(ingredients):
-    # ! REMEMBER TO REMOVE &number
-    findByIngredients = f'https://api.spoonacular.com/recipes/findByIngredients?{key}&ingredients={ingredients}&ranking=1&number=5'
+    findByIngredients = f'https://api.spoonacular.com/recipes/findByIngredients?{key}&ingredients={ingredients}&ranking=1'
     getFindByIngredients = requests.get(findByIngredients)
     return getFindByIngredients.text
+
+
+@app.route('/search/<query>', methods=["GET", "POST"])
+def search(query):
+    search = f'https://api.spoonacular.com/recipes/complexSearch?{key}&query={query}'
+    getSearch = requests.get(search)
+    return getSearch.text
 
 
 @app.route('/findById/<int:id>', methods=['GET', 'POST'])

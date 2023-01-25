@@ -1,15 +1,12 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UseToken from "./components/UseToken";
 import Random from "./components/Random/Random";
 import FindByIngredients from "./components/FindByIngredients/FindByIngredients";
 import Navbar from "./components/Navbar/Navbar";
 import SignUp from "./components/SignUp/SignUp";
 import LogIn from "./components/LogIn/LogIn";
-
-// TODO: FILL NAVBAR WITH PROPER LINKS
-// TODO: MATCH STYLES IN RANDOM.JSX => FINDBYINGREDIENTS.JSX
-// ! ^^^ TEST STYLE MATCH ^^^ !
+import Search from "./components/Search/Search";
 
 const App = () => {
   const { token, removeToken, setToken } = UseToken();
@@ -45,6 +42,11 @@ const App = () => {
                 exact
                 path="/random"
                 element={<Random token={token} setToken={setToken} />}
+              ></Route>
+              <Route
+                exact
+                path="/search"
+                element={<Search token={token} setToken={setToken} />}
               ></Route>
             </Routes>
           </>

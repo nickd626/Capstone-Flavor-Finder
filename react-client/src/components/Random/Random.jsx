@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios"
-import "./Random.css"
+import axios from "axios";
+import "./Random.css";
 
 const Random = (props) => {
   const [data, setData] = useState([]);
@@ -8,7 +8,7 @@ const Random = (props) => {
   const handleSubmit = () => {
     axios({
       method: "GET",
-      url: '/random',
+      url: "/random",
       headers: {
         Authorization: "Bearer " + props.token,
       },
@@ -22,17 +22,27 @@ const Random = (props) => {
       .catch((error) => {
         console.log(error.response);
       });
-    }
-
-
-    
-  // ROUTE AND JSX FUNCTIONAL, FILL WITH VALUES
+  };
 
   return (
     <div>
+      <div className="main-logo">
+        <img
+          className="main-logo-img"
+          src={require("../../images/logo.png")}
+          width="50"
+          height="50"
+          alt="Logo"
+        />
+        <h1 className="main-logo-title">FlavorFinder</h1>
+      </div>
       <div className="random-btn">
-      <h2>Feeling Lucky?</h2>
-        <button className="submit-btn btn btn-success" onClick={handleSubmit} type="submit">
+        <h2>Feeling Lucky?</h2>
+        <button
+          className="submit-btn btn btn-success"
+          onClick={handleSubmit}
+          type="submit"
+        >
           Random Recipe
         </button>
       </div>
@@ -51,26 +61,28 @@ const Random = (props) => {
                 <div className="col-md-8">
                   <div className="card-body">
                     <h5 className="card-title">{data.recipes[0].title}</h5>
-                    <hr/>
+                    <hr />
                     <div
-                          className="summary"
-                          dangerouslySetInnerHTML={{
-                            __html: data.recipes[0].summary,
-                          }}
-                        />
+                      className="summary"
+                      dangerouslySetInnerHTML={{
+                        __html: data.recipes[0].summary,
+                      }}
+                    />
                     <div className="ingredient-list-wrapper">
                       <ul className="ingredient-list">
+                          <strong className="ingredient-title">Ingredients:</strong>
                         <div className="ingredient-wrapper">
-                          <strong>Ingredients:</strong>
                           {data.recipes[0].extendedIngredients &&
-                            data.recipes[0].extendedIngredients.map((ingredients) => (
-                              <li
-                                key={ingredients.name}
-                                className="used-ingredients"
-                              >
-                                {ingredients.name}
-                              </li>
-                            ))}
+                            data.recipes[0].extendedIngredients.map(
+                              (ingredients) => (
+                                <li
+                                  key={ingredients.name}
+                                  className="ingredients"
+                                >
+                                  {ingredients.name}
+                                </li>
+                              )
+                            )}
                         </div>
                       </ul>
                     </div>

@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./FindByIngredients.css";
 
-const FindByIngredients = (props) => {
+const Search = (props) => {
   const [data, setData] = useState([]);
+  const [dataById, setDataById] = useState([]);
   const [summaries, setSummaries] = useState({});
   const [recipeLinks, setRecipeLinks] = useState({});
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(event);
-    let ingredients = event.target[0].value.split(", ");
-    ingredients = ingredients.join(",+");
+    const query = event.target[0].value;
     axios({
       method: "GET",
-      url: `/findByIngredients/${ingredients}`,
+      url: `/search/${query}`,
       headers: {
         Authorization: "Bearer " + props.token,
       },
@@ -26,7 +25,7 @@ const FindByIngredients = (props) => {
         console.log(res);
       })
       .catch((error) => {
-        console.log(error.response);
+        console.log(error);
       });
   };
 
@@ -34,6 +33,10 @@ const FindByIngredients = (props) => {
     fetch(`/findById/${recipe.id}`)
       .then((res) => res.json())
       .then((dataById) => {
+        setDataById((prevDataById) => ({
+          ...prevDataById,
+          [recipe.id]: dataById,
+        }));
         setSummaries((prevSummaries) => ({
           ...prevSummaries,
           [recipe.id]: dataById.summary,
@@ -46,8 +49,8 @@ const FindByIngredients = (props) => {
   };
 
   useEffect(() => {
-    if (data.length > 0) {
-      data.forEach((recipe) => {
+    if (data.results && data.results.length > 0) {
+      data.results.forEach((recipe) => {
         findById(recipe);
       });
     }
@@ -67,13 +70,13 @@ const FindByIngredients = (props) => {
       </div>
       <form className="search" onSubmit={handleSubmit}>
         <h2 className="title">
-          Find recipes that make use of what you already have!
+          Search for any recipe to get detailed information!
         </h2>
         <div className="input-group">
           <input
             type="search"
             className="form-control rounded"
-            placeholder="Ingredients (apples, sugar, cinnamon, etc.)"
+            placeholder="Search recipes by name"
             aria-label="Search"
             aria-describedby="search-addon"
           />
@@ -83,8 +86,8 @@ const FindByIngredients = (props) => {
         </div>
       </form>
       <div className="recipe-block">
-        {data &&
-          data.map((recipe) => {
+        {data.results &&
+          data.results.map((recipe) => {
             return (
               <div className="recipe" key={recipe.id}>
                 <div className="card mb-3">
@@ -109,40 +112,18 @@ const FindByIngredients = (props) => {
                         <div className="ingredient-list-wrapper">
                           <ul className="ingredient-list">
                             <div className="ingredient-wrapper">
-                              <p>Uses:</p>
-                              {recipe.usedIngredients &&
-                                recipe.usedIngredients.map((ingredients) => (
-                                  <li
-                                    key={ingredients.name}
-                                    className="used-ingredients"
-                                  >
-                                    {ingredients.name}
-                                  </li>
-                                ))}
-                            </div>
-                            <div className="ingredient-wrapper">
-                              <p>Missing:</p>
-                              {recipe.missedIngredients &&
-                                recipe.missedIngredients.map((ingredients) => (
-                                  <li
-                                    key={ingredients.name}
-                                    className="missing-ingredients"
-                                  >
-                                    {ingredients.name}
-                                  </li>
-                                ))}
-                            </div>
-                            <div className="ingredient-wrapper">
-                              <p>Unused:</p>
-                              {recipe.unusedIngredients &&
-                                recipe.unusedIngredients.map((ingredients) => (
-                                  <li
-                                    key={ingredients.name}
-                                    className="unused-ingredients"
-                                  >
-                                    {ingredients.name}
-                                  </li>
-                                ))}
+                              <strong>Ingredients:</strong>
+                              {dataById.extendedIngredients &&
+                                dataById.extendedIngredients.map(
+                                  (ingredients) => (
+                                    <li
+                                      key={ingredients.id}
+                                      className="ingredients"
+                                    >
+                                      {ingredients.name}
+                                    </li>
+                                  )
+                                )}
                             </div>
                           </ul>
                         </div>
@@ -165,4 +146,4 @@ const FindByIngredients = (props) => {
   );
 };
 
-export default FindByIngredients;
+export default Search;

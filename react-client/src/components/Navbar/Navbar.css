@@ -1,14 +1,15 @@
 body {
-    font-family: 'Kalam', cursive;
+  font-family: "Kalam", cursive;
 }
 
 .logo-title {
-    display: inline;
-    position: absolute;
-    margin-top: 10px;
-    padding: 30px;
+  color: white;
+  display: inline;
+  padding-right: 30px;
+  margin-top: 12.5px;
+  position: absolute;
 }
 
 .sign-out-btn {
-    padding-right: 10px;
+  padding-right: 10px;
 }

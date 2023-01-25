@@ -2,9 +2,23 @@ body {
   background-color: bisque;
 }
 
+.main-logo {
+  text-align: center;
+  width: 250px;
+  margin: 0 auto;
+  margin-top: 50px;
+  box-shadow: 3px 3px 10px #333;
+  border-radius: 15px;
+}
+
+.main-logo-img {
+  height: 250px;
+  width: 250px;
+}
+
 .search {
   margin: 0 auto;
-  width: 63%;
+  width: 55.75%;
   padding: 100px;
 }
 
