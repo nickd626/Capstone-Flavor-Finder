@@ -5,9 +5,9 @@ body {
 .logo-title {
   color: white;
   display: inline;
-  padding-right: 30px;
-  margin-top: 12.5px;
+  margin-top: 10px;
   position: absolute;
+  font-family: 'Charm', cursive;
 }
 
 .sign-out-btn {

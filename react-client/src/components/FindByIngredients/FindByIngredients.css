@@ -16,6 +16,12 @@ body {
   width: 250px;
 }
 
+.main-logo-title {
+  font-family: 'Charm', cursive;
+  font-size: 45px;
+  font-weight: 600;
+}
+
 .search {
   margin: 0 auto;
   width: 55.75%;

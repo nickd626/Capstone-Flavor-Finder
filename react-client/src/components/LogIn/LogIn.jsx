@@ -70,7 +70,7 @@ const LogIn = (props) => {
             height="50"
             alt="Logo"
           />
-          <h1 className="main-logo-title">FlavorFinder</h1>
+          <h1 className="main-logo-title">Flavor Finder</h1>
         </div>
                   <div className="card-body p-5 w-100">
                     <h2 className="text-uppercase text-center mb-5">Log In</h2>

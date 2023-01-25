@@ -34,7 +34,7 @@ const Random = (props) => {
           height="50"
           alt="Logo"
         />
-        <h1 className="main-logo-title">FlavorFinder</h1>
+        <h1 className="main-logo-title">Flavor Finder</h1>
       </div>
       <div className="random-btn">
         <h2>Feeling Lucky?</h2>

@@ -66,7 +66,7 @@ const Search = (props) => {
           height="50"
           alt="Logo"
         />
-        <h1 className="main-logo-title">FlavorFinder</h1>
+        <h1 className="main-logo-title">Flavor Finder</h1>
       </div>
       <form className="search" onSubmit={handleSubmit}>
         <h2 className="title">

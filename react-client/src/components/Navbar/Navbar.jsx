@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
-import Search from "../Search/Search";
 
 const Navbar = (props) => {
   const navigate = useNavigate();
@@ -37,7 +36,7 @@ const Navbar = (props) => {
             height="50"
             alt="Logo"
           />
-          <h3 className="logo-title">FlavorFinder</h3>
+          <h2 className="logo-title">FlavorFinder</h2>
         </Link>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
@@ -46,19 +45,19 @@ const Navbar = (props) => {
               style={{
                 textDecoration: "none",
                 color: "white",
-                paddingLeft: "10px",
+                paddingLeft: "20px",
                 paddingInline: "5px",
               }}
             >
               <li className="nav-item">
-                <button className="btn btn-success btn-rounded">Home</button>
+                <button 
+                className="btn btn-success btn-rounded">Home</button>
               </li>
             </Link><Link
               to={"/search"}
               style={{
                 textDecoration: "none",
                 color: "white",
-                paddingLeft: "10px",
                 paddingInline: "5px",
               }}
             >

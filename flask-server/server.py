@@ -113,11 +113,9 @@ def refresh_expiring_jwts(response):
 @app.post('/token')
 def create_token():
     data = request.get_json()
-    print(data)
     user = User.query.filter_by(username=data['username']).first()
     try:
         if user.password == data['password']:
-            print('passed if statement')
             access_token = create_access_token(identity=data['username'])
             return make_response(({'access_token': access_token, 'success': True}), 200)
         else:
