@@ -2,15 +2,13 @@ from flask import Flask, request, make_response, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_login import LoginManager, UserMixin
 from flask_jwt_extended import create_access_token, get_jwt, get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 import requests
 import os
 import json
 
-
-# !!! GIT !!!
 
 class Config():
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
@@ -38,7 +36,7 @@ if __name__ == '__main__':
 
 @app.route('/findByIngredients/<ingredients>', methods=['GET', 'POST'])
 def findByIngredients(ingredients):
-    findByIngredients = f'https://api.spoonacular.com/recipes/findByIngredients?{key}&ingredients={ingredients}&ranking=1'
+    findByIngredients = f'https://api.spoonacular.com/recipes/findByIngredients?{key}&ingredients={ingredients}&ranking=2'
     getFindByIngredients = requests.get(findByIngredients)
     return getFindByIngredients.text
 

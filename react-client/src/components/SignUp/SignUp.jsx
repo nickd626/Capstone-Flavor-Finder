@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./SignUp.css";
 
 const SignUp = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -32,7 +32,7 @@ const SignUp = () => {
       .then((res) => res.json())
       .then((data) => console.log(data))
       .catch((error) => console.log(error));
-      navigate('/login')
+    navigate("/login");
   };
 
   return (

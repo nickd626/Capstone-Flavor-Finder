@@ -62,16 +62,19 @@ const LogIn = (props) => {
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col-12 col-md-9 col-lg-7 col-xl-6">
                 <div className="card" style={{ borderRadius: "15px" }}>
-        <div className="main-logo" style={{ backgroundColor: "bisque" }}>
-          <img
-            className="main-logo-img"
-            src={require("../../images/logo.png")}
-            width="50"
-            height="50"
-            alt="Logo"
-          />
-          <h1 className="main-logo-title">Flavor Finder</h1>
-        </div>
+                  <div
+                    className="main-logo"
+                    style={{ backgroundColor: "bisque" }}
+                  >
+                    <img
+                      className="main-logo-img"
+                      src={require("../../images/logo.png")}
+                      width="50"
+                      height="50"
+                      alt="Logo"
+                    />
+                    <h1 className="main-logo-title">Flavor Finder</h1>
+                  </div>
                   <div className="card-body p-5 w-100">
                     <h2 className="text-uppercase text-center mb-5">Log In</h2>
                     <form className="login" id="registration-form">

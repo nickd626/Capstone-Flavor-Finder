@@ -70,7 +70,9 @@ const Random = (props) => {
                     />
                     <div className="ingredient-list-wrapper">
                       <ul className="ingredient-list">
-                          <strong className="ingredient-title">Ingredients:</strong>
+                        <strong className="ingredient-title">
+                          Ingredients:
+                        </strong>
                         <div className="ingredient-wrapper">
                           {data.recipes[0].extendedIngredients &&
                             data.recipes[0].extendedIngredients.map(

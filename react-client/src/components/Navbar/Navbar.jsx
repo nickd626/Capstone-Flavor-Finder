@@ -50,10 +50,10 @@ const Navbar = (props) => {
               }}
             >
               <li className="nav-item">
-                <button 
-                className="btn btn-success btn-rounded">Home</button>
+                <button className="btn btn-success btn-rounded">Home</button>
               </li>
-            </Link><Link
+            </Link>
+            <Link
               to={"/search"}
               style={{
                 textDecoration: "none",
@@ -62,7 +62,9 @@ const Navbar = (props) => {
               }}
             >
               <li className="nav-item">
-                <button className="btn btn-success btn-rounded">Search by Name</button>
+                <button className="btn btn-success btn-rounded">
+                  Search by Name
+                </button>
               </li>
             </Link>
             <li className="nav-item">

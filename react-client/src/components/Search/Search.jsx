@@ -113,8 +113,8 @@ const Search = (props) => {
                           <ul className="ingredient-list">
                             <div className="ingredient-wrapper">
                               <strong>Ingredients:</strong>
-                              {dataById.extendedIngredients &&
-                                dataById.extendedIngredients.map(
+                              {dataById[recipe.id].extendedIngredients &&
+                                dataById[recipe.id].extendedIngredients.map(
                                   (ingredients) => (
                                     <li
                                       key={ingredients.id}

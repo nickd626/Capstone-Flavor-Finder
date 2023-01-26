@@ -12,22 +12,21 @@
 }
 
 .ingredient-title {
-    display: block;
-    height: 0px;
+  display: block;
+  padding-top: 30px;
 }
 
 .ingredient-wrapper {
-  /* width: 100%; */
-  width:100%;
+  width: 100%;
   height: 300px;
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
 .ingredients {
-    text-align:center;
-  width:100%;
-  height:25%;
-  padding:10px;
+  text-align: center;
+  width: 100%;
+  height: 25%;
+  padding: 10px;
 }

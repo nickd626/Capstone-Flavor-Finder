@@ -25,4 +25,4 @@ const useToken = () => {
   };
 };
 
-export default useToken
+export default useToken;
