@@ -3,7 +3,7 @@ import axios from "axios";
 
 const Search = (props) => {
   const [data, setData] = useState([]);
-  const [dataById, setDataById] = useState([]);
+  const [recipeIngredients, setRecipeIngredients] = useState([]);
   const [summaries, setSummaries] = useState({});
   const [recipeLinks, setRecipeLinks] = useState({});
 
@@ -33,11 +33,11 @@ const Search = (props) => {
     fetch(`/findById/${recipe.id}`)
       .then((res) => res.json())
       .then((dataById) => {
-        setDataById((prevDataById) => ({
-          ...prevDataById,
-          [recipe.id]: dataById,
+        setRecipeIngredients((prevRecipeIngredients) => ({
+          ...prevRecipeIngredients,
+          [recipe.id]: dataById.extendedIngredients,
         }));
-        setSummaries((prevSummaries) => ({
+          setSummaries((prevSummaries) => ({
           ...prevSummaries,
           [recipe.id]: dataById.summary,
         }));
@@ -113,8 +113,8 @@ const Search = (props) => {
                           <ul className="ingredient-list">
                             <div className="ingredient-wrapper">
                               <strong>Ingredients:</strong>
-                              {dataById[recipe.id].extendedIngredients &&
-                                dataById[recipe.id].extendedIngredients.map(
+                              {recipeIngredients[recipe.id] &&
+                                recipeIngredients[recipe.id].map(
                                   (ingredients) => (
                                     <li
                                       key={ingredients.id}
